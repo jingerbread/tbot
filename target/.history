@@ -1,6 +1,0 @@
-sbt
-scalac TelegramBot
-scalac TelegramBot.scala
-run
-tbot
-run
