@@ -4,7 +4,7 @@
 		module="tbot-build"
 		revision="0.1-SNAPSHOT"
 		status="integration"
-		publication="20170325190306"
+		publication="20170325192028"
 		e:sbtVersion="0.13" e:scalaVersion="2.10"
 	>
 		<description>
