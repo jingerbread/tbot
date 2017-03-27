@@ -1,7 +1,7 @@
 package com.ifunsoftware.telegram.bot
 
 import akka.actor.ActorSystem
-import spray.http.{HttpEntity, HttpRequest, HttpResponse, MediaTypes}
+import spray.http._
 import spray.client.pipelining._
 import spray.http.StatusCodes.Success
 import spray.httpx.SprayJsonSupport._
@@ -43,7 +43,9 @@ class TelegramBot {
 
   def send_reply(text:String) = {
     val pipeline: HttpRequest => Future[HttpResponse] = sendReceive
-    val response: Future[HttpResponse] = pipeline(Post(API_URL + "sendMessage", "{'chat_id': " + chatId +", 'text': '" + text + "'}"))
+    val msg = "{'chat_id': " + chatId +", 'text': '" + text + "'}"
+    println("{'chat_id': " + chatId +", 'text': '" + text + "'}")
+    val response: Future[HttpResponse] = pipeline(Post( API_URL + "sendMessage",HttpEntity(ContentTypes.`application/json`, msg)))
     response onComplete {
       case ScalaSuccess(result) => println(result)
 
@@ -59,6 +61,7 @@ object HelloWorld {
     val tbot:TelegramBot = new TelegramBot()
     val result = tbot.getAboutInfo
     println(result)
+    println("")
     tbot.send_reply("Hello, world!")
   }
 }
