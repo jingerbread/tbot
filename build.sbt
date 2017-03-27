@@ -18,3 +18,5 @@ libraryDependencies += "com.typesafe.akka" % "akka-actor_2.11" % "2.4.17"
 libraryDependencies += "org.apache.logging.log4j" % "log4j-api" % "2.8.1"
 
 libraryDependencies += "org.apache.logging.log4j" % "log4j-core" % "2.8.1"
+
+libraryDependencies += "io.spray" %%  "spray-json" % "1.3.3"
