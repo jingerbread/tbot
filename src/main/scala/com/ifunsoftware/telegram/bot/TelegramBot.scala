@@ -3,16 +3,18 @@ package com.ifunsoftware.telegram.bot
 import akka.actor.ActorSystem
 import spray.http._
 import spray.client.pipelining._
-import spray.http.StatusCodes.Success
-import spray.httpx.SprayJsonSupport._
-import spray.json.DefaultJsonProtocol._
-
+import spray.http.HttpEntity
+import spray.http._
+import spray.json._
+import spray.httpx.marshalling.{Marshaller, MarshallingContext}
+import spray.json._
+import DefaultJsonProtocol._
 import scala.concurrent.Future
 import scala.concurrent._
 import ExecutionContext.Implicits.global
 import scala.util.Failure
 import scala.util.{Success => ScalaSuccess}
-
+import Message._
 
 class TelegramBot {
   implicit val system = ActorSystem()
@@ -20,6 +22,8 @@ class TelegramBot {
   val chatId = 167389
   val API_URL = "https://api.telegram.org/bot" + token + "/"
   val NO_RESPONSE = "NO_RESPONSE"
+
+
 
   def getAboutInfo:String = {
     val pipeline: HttpRequest => Future[HttpResponse] = sendReceive
@@ -45,7 +49,12 @@ class TelegramBot {
     val pipeline: HttpRequest => Future[HttpResponse] = sendReceive
     val msg = "{'chat_id': " + chatId +", 'text': '" + text + "'}"
     println("{'chat_id': " + chatId +", 'text': '" + text + "'}")
-    val response: Future[HttpResponse] = pipeline(Post( API_URL + "sendMessage",HttpEntity(ContentTypes.`application/json`, msg)))
+
+    val msg1:Message = new Message(chatId, text)
+
+    println("msg: " + msg)
+
+    val response: Future[HttpResponse] = pipeline(Post( API_URL + "sendMessage",  msg1))
     response onComplete {
       case ScalaSuccess(result) => println(result)
 
