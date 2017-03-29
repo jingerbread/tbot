@@ -8,22 +8,22 @@ import spray.http._
 import spray.json._
 import spray.httpx.marshalling.{Marshaller, MarshallingContext}
 import spray.json._
-import DefaultJsonProtocol._
 import scala.concurrent.Future
 import scala.concurrent._
 import ExecutionContext.Implicits.global
 import scala.util.Failure
 import scala.util.{Success => ScalaSuccess}
 import Message._
+import DefaultJsonProtocol._
+import MessageJsonProtocol._
 
 class TelegramBot {
   implicit val system = ActorSystem()
+
   val token = "331616983:AAHnWOvHqFkNCNJqVuJAx6P7KatGzYY2m7s"
   val chatId = 167389
   val API_URL = "https://api.telegram.org/bot" + token + "/"
   val NO_RESPONSE = "NO_RESPONSE"
-
-
 
   def getAboutInfo:String = {
     val pipeline: HttpRequest => Future[HttpResponse] = sendReceive
@@ -72,5 +72,8 @@ object HelloWorld {
     println(result)
     println("")
     tbot.send_reply("Hello, world!")
+    val msg1:Message = new Message(123, "text")
+    val json = msg1.toJson
+    val color = json.convertTo[Message]
   }
 }
