@@ -55,11 +55,11 @@ class TelegramBot {
     println("msg: " + msg)
 
     val response: Future[HttpResponse] = pipeline(Post( API_URL + "sendMessage",  msg1))
-//    response onComplete {
-//      case ScalaSuccess(result) => println(result)
-//
-//      case Failure(error) => println(error.getMessage)
-//    }
+    response onComplete {
+      case ScalaSuccess(result) => println(result)
+
+      case Failure(error) => println(error.getMessage)
+    }
   }
 }
 
@@ -71,7 +71,7 @@ object HelloWorld {
     val result = tbot.getAboutInfo
     println(result)
     println("")
-    //tbot.send_reply("Hello, world!")
+    tbot.send_reply("Hello, world!")
     val msg1:Message = new Message(123, "text")
     val json = msg1.toJson
     val color = json.convertTo[Message]
