@@ -1,6 +1,6 @@
 package com.ifunsoftware.telegram.bot
 
-import akka.actor.ActorSystem
+import akka.actor.{ActorSystem, Props}
 import spray.http._
 import spray.client.pipelining._
 import spray.http.HttpEntity
@@ -8,6 +8,7 @@ import spray.http._
 import spray.json._
 import spray.httpx.marshalling.{Marshaller, MarshallingContext}
 import spray.json._
+
 import scala.concurrent.Future
 import scala.concurrent._
 import ExecutionContext.Implicits.global
@@ -16,6 +17,8 @@ import scala.util.{Success => ScalaSuccess}
 import Message._
 import DefaultJsonProtocol._
 import MessageJsonProtocol._
+import akka.io.IO
+import spray.can.Http
 
 class TelegramBot {
   implicit val system = ActorSystem()
@@ -54,7 +57,9 @@ class TelegramBot {
 
     println("msg: " + msg)
 
-    val response: Future[HttpResponse] = pipeline(Post( API_URL + "sendMessage",  msg1))
+    val request = Post( API_URL + "sendMessage", msg1)
+    println(request)
+    val response: Future[HttpResponse] = pipeline(request)
     response onComplete {
       case ScalaSuccess(result) => println(result)
 
@@ -68,14 +73,14 @@ object HelloWorld {
   def main(args: Array[String]): Unit = {
     println("Hello, world!")
     val tbot:TelegramBot = new TelegramBot()
-    val result = tbot.getAboutInfo
-    println(result)
-    println("")
+    tbot.getAboutInfo
+//    println(result)
+//    println("")
     tbot.send_reply("Hello, world!")
-    val msg1:Message = new Message(123, "text")
-    val json = msg1.toJson
-    val color = json.convertTo[Message]
-    println(json
-    )
+//    val msg1:Message = new Message(123, "text")
+//    val json = msg1.toJson
+//    val color = json.convertTo[Message]
+//    println(json
+//    )
   }
 }

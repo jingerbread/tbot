@@ -13,7 +13,7 @@ object MessageJsonProtocol extends DefaultJsonProtocol {
   implicit val MessageMarshaller =
     Marshaller.of[Message](MediaTypes.register(MediaType.custom("application/json"))) { (value, contentType, ctx) =>
       val Message(chatId, text) = value
-      val string = "'chatId': %s,'text': %s".format(chatId, text)
+      val string = "{\"chat_id\": %s,\"text\": \"%s\"}".format(chatId, text)
       ctx.marshalTo(HttpEntity(contentType, string))
     }
 }
